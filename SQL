@@ -1,0 +1,157 @@
+CREATE DATABASE db1;
+
+CREATE TABLE db1.Universities(
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nameOfuniversiti VARCHAR(100)NOT NULL UNIQUE 
+);
+
+CREATE TABLE db1.Faculties (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nameOfFaculties VARCHAR(100)NOT NULL UNIQUE,
+id_universities INT NOT NULL,
+ FOREIGN KEY (id_universities) REFERENCES db1.Universities(id)
+);
+
+CREATE TABLE db1.Teachers (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(20)NOT NULL,
+lastname  VARCHAR(20)NOT NULL
+);
+
+CREATE TABLE db1.Students (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(20)NOT NULL,
+lastname  VARCHAR(20)NOT NULL
+);
+
+CREATE TABLE db1.Groups (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nameOfGroups VARCHAR(100)NOT NULL UNIQUE 
+);
+ 
+CREATE TABLE db1.PointsforExam(
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_Students INT NOT NULL,
+ FOREIGN KEY (id_Students) REFERENCES db1.Students(id),
+PointsforExam INT NOT NULL 
+);
+
+INSERT INTO db1.Universities (id,nameOfuniversiti) VALUES
+ (1,"Університет державної фіскальної служби України"),
+ (2,"Київський національний університет імені Тараса Шевченка"),
+ (3,"Національний університет «Києво-Могилянська академія"),
+ (4,"Національний авіаційний університет"),
+ (5,"Національний медичний університет імені О. О. Богомольця")
+ ;
+ 
+ INSERT INTO db1.Faculties (nameOfFaculties,id_universities) VALUES
+ ("Факультет податкової справи, обліку та аудиту",1),
+ ("Факультет фінансів та цифрових технологій",1),
+ ("Географічний факультет",2),
+ ("Економічний факультет",2),
+ ("Факультет гуманітарних наук",3),
+ ("Факультет інформатики",3),
+ ("Факультет аеронавігації, електроніки та телекомунікацій",4),
+ ("Аерокосмічний факультет",4),
+ ("Стоматологічний факультет",5),
+ ("Медико-психологічний факультет",5)
+ ;
+ 
+  INSERT INTO db1.Teachers (id,firstname,lastname) VALUES
+  (1, "Карина", "Железнякова"),
+  (2,"Анна","Іванова"),
+  (3,"Валерія","Коновалець"),
+  (4, "Гліб","Тульченко"),
+  (5, "Лілія","Шкільна"),
+  (6, "Микита","Маслєніков"),
+  (7, "Даніелла","Коваленко"),
+  (8, "Любов","Товстолужська"),
+  (9, "Орина ","Степаненко"),
+  (10, "Аріна","Кузьменко")
+ ;
+ 
+  INSERT INTO db1.Students (id,firstname,lastname) VALUES
+  (1,"Володимир","Мельник"),
+  (2,"Вікторія","Шевченко"),
+  (3,"Наталія","Бондаренко"),
+  (4, "Максим","Ткаченко"),
+  (5, "Віктор","Кравченко"),
+  (6, "Катерина","Коваль"),
+  (7, "Дмитро","Олійник"),
+  (8, "Оксана","Поліщук"),
+  (9, "Тетяна","Руденко"),
+  (10, "Єлизавета","Мороз")
+ ;
+ 
+  INSERT INTO db1.Groups (id,nameofGroups) VALUES
+  (1, "1ПСОА"),
+  (2, "029Ф"),
+  (3, "02ГФ"),
+  (4, "035ЕФ"),
+  (5, "041"),
+  (6, "254ИТ"),
+  (7, "010"),
+  (8, "68АЕРО"),
+  (9, "043СФ"),
+  (10, "22МПФ")
+ ;
+ 
+ INSERT INTO db1.PointsforExam (id_Students,PointsforExam) VALUES
+ (1,68),
+ (2,84),
+ (3,73),
+ (4,90),
+ (5,70),
+ (6,100),
+ (7,79),
+ (8,85),
+ (9,60),
+ (10,73)
+ ;
+ 
+
+SELECT * FROM db1.Universities;
+
+SELECT firstname,lastname FROM db1.Students;
+
+SELECT firstname FROM db1.Teachers WHERE firstname = "Валерія";
+
+SELECT nameofGroups FROM db1.Groups WHERE nameofGroups LIKE "%АЕРО%";
+
+SELECT nameofuniversiti FROM db1.Universities WHERE nameofuniversiti LIKE "%а%";
+
+
+
+SELECT COUNT(*) FROM db1.Universities;
+
+SELECT COUNT(nameofuniversiti) FROM db1.Universities WHERE nameofuniversiti LIKE "%Національний%";
+
+SELECT MIN(PointsforExam) FROM db1.PointsforExam;
+
+SELECT MAX(PointsforExam) FROM db1.PointsforExam;
+
+SELECT AVG(PointsforExam) FROM db1.PointsforExam;
+
+SELECT SUM(PointsforExam) FROM db1.PointsforExam;
+
+SELECT COUNT(id_Students) FROM db1.PointsforExam WHERE PointsforExam = 60 GROUP BY id_Students;
+
+
+
+SELECT COUNT(PointsforExam), PointsforExam FROM db1.PointsforExam GROUP BY PointsforExam;
+
+SELECT COUNT(PointsforExam), PointsforExam FROM db1.PointsforExam GROUP BY PointsforExam HAVING PointsforExam = 73;
+
+SELECT * FROM db1.Students ORDER BY lastname ASC;
+
+SELECT * FROM db1.Students ORDER BY lastname DESC;
+
+SELECT * FROM db1.Students ORDER BY lastname ASC LIMIT 5 OFFSET 2;
+
+
+
+SELECT * FROM db1.PointsforExam INNER JOIN db1.Students ON db1.PointsforExam.id_Students = db1.Students.id;
+
+SELECT * FROM db1.PointsforExam RIGHT JOIN db1.Students ON db1.PointsforExam.id_Students = db1.Students.id;
+
+SELECT * FROM db1.PointsforExam LEFT JOIN db1.Students ON db1.PointsforExam.id_Students = db1.Students.id;
